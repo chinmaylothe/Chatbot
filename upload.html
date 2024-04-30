@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Data</title>
+</head>
+<body>
+    <h1>Upload Data</h1>
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <input type="submit" value="Upload">
+    </form>
+    <h2>Ask a Question</h2>
+    <form id="question-form">
+        <input type="text" id="question" placeholder="Enter your question">
+        <button type="submit">Ask</button>
+    </form>
+    <div id="answer"></div>
+    <script>
+        const form = document.getElementById('question-form');
+        const answerDiv = document.getElementById('answer');
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const question = document.getElementById('question').value;
+            const response = await fetch('/ask', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `question=${encodeURIComponent(question)}`
+            });
+            const answer = await response.text();
+            answerDiv.textContent = answer;
+        });
+    </script>
+</body>
+</html>
